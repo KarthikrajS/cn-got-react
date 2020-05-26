@@ -1,4 +1,5 @@
 {
+  "root": "build/",
   "proxies":{
     "/api/": {
     "origin": "${API_APP_NAME}.herokuapp.com"
