@@ -2,7 +2,7 @@
   "root": "build/",
   "proxies":{
     "/api/": {
-    "origin": "https://battleapp-got.herokuapp.com"
+    "origin": "http://battleapp-got.herokuapp.com"
   }
 }
 }
