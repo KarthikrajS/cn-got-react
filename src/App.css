@@ -7,6 +7,7 @@
   pointer-events: none;
 }
 
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -23,9 +24,17 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.cardWidth{
+  width:250% !important;
+}
 .App-link {
   color: #61dafb;
+}
+.noSecBar{
+  display: none;
+}
+.yesSecBar{
+  display: block;
 }
 
 @keyframes App-logo-spin {
@@ -36,3 +45,10 @@
     transform: rotate(360deg);
   }
 }
+
+@media(min-width: 320px) {
+  .card-columns .card {
+    width: auto;
+  }
+}
+
