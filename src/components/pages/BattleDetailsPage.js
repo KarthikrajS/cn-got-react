@@ -128,7 +128,6 @@ class BattleDetailsPage extends React.Component{
     buildCommanderCards(cmd){
         var cmdCard =[]
         var cmdColl =[]
-
         cmdColl.push(cmd.split("/"))
         cmdColl[0].forEach(cmds=>{
             cmdCard.push(
@@ -141,7 +140,7 @@ class BattleDetailsPage extends React.Component{
                 </Grid.Column>
             )
         })
-        return kingCard
+        return cmdCard
     }
     buildKingCards(kings,color){
         var kingCard =[]
@@ -206,6 +205,13 @@ class BattleDetailsPage extends React.Component{
             </Container>
             }
             <br/>
+            <Container style={{"marginLeft":"1%"}}>
+                <Grid.Row style={{"marginRight":"1.5%"}}>
+                    {battle.length!==0 && battle[0].attacker_commander!=="" && this.buildCommanderCards(battle[0].attacker_commander) }
+                    <hr/>
+                    {battle.length!==0 && battle[0].defender_commander!=="" && this.buildCommanderCards(battle[0].defender_commander) }
+                </Grid.Row>
+            </Container>
             <Container>
                 {console.log(battle[0])}
                 <Grid.Row style={{"marginRight":"1.5%"}}>
@@ -226,7 +232,6 @@ class BattleDetailsPage extends React.Component{
                     <hr/>
                     {battle.length !==0 &&this.buildHouseCard(defend,battle[0].defender_size)}
                 </Grid.Row>
-                <Col></Col>
             </Container>
         </div>)
     }
