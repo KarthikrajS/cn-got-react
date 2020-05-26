@@ -1,8 +1,8 @@
 {
   "root": "build/",
   "proxies":{
-    "/api/": {
-    "origin": "career-ninja-got.herokuapp.com/api/"
+    "/api": {
+    "origin": "http:career-ninja-got.herokuapp.com"
   }
 }
 }

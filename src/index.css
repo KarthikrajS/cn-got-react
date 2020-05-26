@@ -10,7 +10,6 @@ body {
   background-attachment: fixed !important;
   background-size: 60% 100% !important;
   background-position: center !important;
-
 }
 .kingImg {background-blend-mode: difference;
   opacity:0.3; border-radius: 50%;
