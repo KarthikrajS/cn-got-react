@@ -30,13 +30,16 @@ import renlybaratheon from '../icons/renlybaratheon.jpg'
 import stannisbaratheon from '../icons/stannisbaratheon.png'
 import tommenbaratheon from '../icons/tommenbaratheon.jpg'
 import mancerayder from '../icons/mancerayder.png'
+import attack from '../icons/attack.png'
+import defend from '../icons/defend.png'
 
 class BattleDetailsPage extends React.Component{
 
     state={
         battle:[],
         isLoading:false,
-        imageURL:null
+        imageURL:null,
+
     }
     componentWillMount() {
         const  params = new URLSearchParams(window.location.search)
@@ -104,7 +107,7 @@ class BattleDetailsPage extends React.Component{
     updateState(){
         this.setState({isLoading :!this.state.isLoading})
     }
-    buildHouseCard(housename,color){
+    buildHouseCard(housename,text){
         var name =housename.split(" ").join("").split("'").join("").toLocaleLowerCase()
         var data = this.aquireHouse(name)
         var houseCard = []
@@ -113,8 +116,8 @@ class BattleDetailsPage extends React.Component{
             <Grid.Column>
                 <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
                     <Card.Body>
-                        {<div className="houseImg" >
-                            <img src={data} style={{"weight":"50px","height":"50px"}} ></img></div>}
+                        <div className="houseImg" ><img src={data} style={{"weight":"50px","height":"50px"}} ></img></div>
+                        <div className="number">{text===null? text:''}</div>
                     </Card.Body>
                 </Card>
             </Grid.Column>
@@ -179,17 +182,23 @@ class BattleDetailsPage extends React.Component{
             <Container>
                 {console.log(battle[0])}
                 <Grid.Row style={{"marginRight":"1.5%"}}>
-                    {battle.length !==0 && battle[0].attacker_1 !=="" &&this.buildHouseCard(battle[0].attacker_1,battle[0].attacker_outcome=== 'win' ?'green':'red')}
-                    {battle.length !==0 && battle[0].attacker_2 !=="" && this.buildHouseCard(battle[0].attacker_2,battle[0].attacker_outcome=== 'win' ?'green':'red')}
-                    {battle.length !==0 && battle[0].attacker_3 !=="" && this.buildHouseCard(battle[0].attacker_3,battle[0].attacker_outcome=== 'win' ?'green':'red')}
-                    {battle.length !==0 && battle[0].attacker_4 !=="" && this.buildHouseCard(battle[0].attacker_4,battle[0].attacker_outcome=== 'win' ?'green':'red')}
+                    {battle.length !==0 && battle[0].attacker_1 !=="" &&this.buildHouseCard(battle[0].attacker_1,null)}
+                    {battle.length !==0 && battle[0].attacker_2 !=="" && this.buildHouseCard(battle[0].attacker_2,null)}
+                    {battle.length !==0 && battle[0].attacker_3 !=="" && this.buildHouseCard(battle[0].attacker_3,null)}
+                    {battle.length !==0 && battle[0].attacker_4 !=="" && this.buildHouseCard(battle[0].attacker_4,null)}
 
                     <hr/>
 
-                    {battle.length !==0 && battle[0].defender_1 !=="" && this.buildHouseCard(battle[0].defender_1,battle[0].attacker_outcome=== 'win' ?'green':'red')}
-                    {battle.length !==0 && battle[0].defender_2 !=="" && this.buildHouseCard(battle[0].defender_2,battle[0].attacker_outcome=== 'win' ?'green':'red')}
-                    {battle.length !==0 && battle[0].defender_3 !=="" && this.buildHouseCard(battle[0].defender_3,battle[0].attacker_outcome=== 'win' ?'green':'red')}
-                    {battle.length !==0 && battle[0].defender_4 !=="" && this.buildHouseCard(battle[0].defender_4,battle[0].attacker_outcome=== 'win' ?'green':'red')}
+                    {battle.length !==0 && battle[0].defender_1 !=="" && this.buildHouseCard(battle[0].defender_1,null)}
+                    {battle.length !==0 && battle[0].defender_2 !=="" && this.buildHouseCard(battle[0].defender_2,null)}
+                    {battle.length !==0 && battle[0].defender_3 !=="" && this.buildHouseCard(battle[0].defender_3,null)}
+                    {battle.length !==0 && battle[0].defender_4 !=="" && this.buildHouseCard(battle[0].defender_4,null)}
+                </Grid.Row>
+                <Grid.Row style={{"marginRight":"1.5%"}}>
+                    {battle.length !==0 && battle[0].attacker_size !=="" &&this.buildHouseCard(attack,battle[0].attacker_size)}
+
+                    <hr/>
+                    {battle.length !==0 && battle[0].defender_size !=="" &&this.buildHouseCard(defend,battle[0].defender_size)}
                 </Grid.Row>
                 <Col></Col>
             </Container>
@@ -204,9 +213,7 @@ BattleDetailsPage.prototypes ={
 
 function mapStateToProps(state) {
     return {
-        isBattle: !!state.battle,
-
-        // userType:decode(localStorage.iotJWT).userType
+        isBattle: !!state.battle
     }
 }
 export default connect(mapStateToProps,{battleDetails})(BattleDetailsPage)
