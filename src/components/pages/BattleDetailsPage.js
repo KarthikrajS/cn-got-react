@@ -82,6 +82,10 @@ class BattleDetailsPage extends React.Component{
             return brotherhood
         if (housename === "darry" )
             return darry
+        if(housename === "defend")
+            return defend
+        if(housename === "attack")
+            return attack
 
     }
     aquireImage(kingName){
@@ -124,7 +128,12 @@ class BattleDetailsPage extends React.Component{
         )
         return houseCard
     }
-
+    deathCapture(key,val){
+        return(<Card>
+            <Card.Title>{key}</Card.Title>
+            <Card.Body>{val===0?"No":"Yes"}</Card.Body>
+        </Card>)
+    }
     buildCommanderCards(cmd){
         var cmdCard =[]
         var cmdColl =[]
@@ -212,9 +221,9 @@ class BattleDetailsPage extends React.Component{
                     {battle.length!==0 && battle[0].defender_commander!=="" && this.buildCommanderCards(battle[0].defender_commander) }
                 </Grid.Row>
             </Container>
-            <Container>
+            <Container >
                 {console.log(battle[0])}
-                <Grid.Row style={{"marginRight":"1.5%"}}>
+                <Grid.Row style={{"marginLeft":"1%","marginRight":"1.5%"}}>
                     {battle.length !==0 && battle[0].attacker_1 !=="" &&this.buildHouseCard(battle[0].attacker_1,null)}
                     {battle.length !==0 && battle[0].attacker_2 !=="" && this.buildHouseCard(battle[0].attacker_2,null)}
                     {battle.length !==0 && battle[0].attacker_3 !=="" && this.buildHouseCard(battle[0].attacker_3,null)}
