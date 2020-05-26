@@ -2,14 +2,7 @@
   "name": "cn-got-react",
   "version": "0.1.0",
   "private": true,
-  "proxy": {
-    "/api": {
-      "target": "http://career-ninja-got.herokuapp.com",
-      "pathRewrite": {
-        "^/api": "/"
-      }
-    }
-  },
+  "proxy": "http://career-ninja-got.herokuapp.com",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
