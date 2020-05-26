@@ -1,8 +1,7 @@
 {
-  "root": "build/",
   "proxies":{
     "/api/": {
-    "target": "${API_URL}"
+    "origin": "${API_APP_NAME}.herokuapp.com"
   }
 }
 }
