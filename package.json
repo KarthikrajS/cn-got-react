@@ -6,7 +6,7 @@
     "/api": {
       "target": "http://career-ninja-got.herokuapp.com",
       "pathRewrite": {
-        "^api": "/"
+        "^/api": "/"
       }
     }
   },
