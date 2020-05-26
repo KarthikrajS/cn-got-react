@@ -124,11 +124,28 @@ class BattleDetailsPage extends React.Component{
         )
         return houseCard
     }
+
+    buildCommanderCards(cmd){
+        var cmdCard =[]
+        var cmdColl =[]
+
+        cmdColl.push(cmd.split("/"))
+        cmdColl[0].forEach(cmds=>{
+            cmdCard.push(
+                <Grid.Column xs={3} md={3} style={{"marginLeft":"1%"}}>
+                    <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
+                        <Card.Body>
+                            {<div className="cmdName">{cmds}</div>}
+                        </Card.Body>
+                    </Card>
+                </Grid.Column>
+            )
+        })
+        return kingCard
+    }
     buildKingCards(kings,color){
         var kingCard =[]
         var kingColl =[]
-        var kingsData =JSON.parse(localStorage.getItem("kingsData"))
-        var imageType =  "jpg"
 
         kingColl.push(kings.split("/"))
         kingColl[0].forEach(king=>{
@@ -165,14 +182,14 @@ class BattleDetailsPage extends React.Component{
                                 {battle[0].name}
                             </Card>
                             }
-                        </Grid.Column>
-                        <Grid.Column >
                             {battle.length !==0 &&
                             <Card  bg="dark" text="white"  style={{"width": "100%","fontSize":"15px"}}
                                    className="text-center p-3" >
                                 {battle[0].lcoation+", "+ battle[0].region}</Card>
                             }
                         </Grid.Column>
+
+
 
                     </Grid.Row>
                 </Grid>
