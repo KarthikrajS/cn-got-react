@@ -162,8 +162,18 @@ class BattleDetailsPage extends React.Component{
                             {battle.length !==0 &&
                             <Card  bg="dark" text="white"  style={{"width": "100%","fontSize":"15px"}}
                                    className="text-center p-3" >
-                                {battle[0].name +", "+ battle[0].region}</Card>}
+                                {battle[0].name}
+                            </Card>
+                            }
                         </Grid.Column>
+                        <Grid.Column >
+                            {battle.length !==0 &&
+                            <Card  bg="dark" text="white"  style={{"width": "100%","fontSize":"15px"}}
+                                   className="text-center p-3" >
+                                {battle[0].lcoation+", "+ battle[0].region}</Card>
+                            }
+                        </Grid.Column>
+
                     </Grid.Row>
                 </Grid>
             </Container>
@@ -195,10 +205,9 @@ class BattleDetailsPage extends React.Component{
                     {battle.length !==0 && battle[0].defender_4 !=="" && this.buildHouseCard(battle[0].defender_4,null)}
                 </Grid.Row>
                 <Grid.Row style={{"marginRight":"1.5%"}}>
-                    {battle.length !==0 && battle[0].attacker_size !=="" &&this.buildHouseCard(attack,battle[0].attacker_size)}
-
+                    {battle.length !==0 &&this.buildHouseCard(attack,battle[0].attacker_size)}
                     <hr/>
-                    {battle.length !==0 && battle[0].defender_size !=="" &&this.buildHouseCard(defend,battle[0].defender_size)}
+                    {battle.length !==0 &&this.buildHouseCard(defend,battle[0].defender_size)}
                 </Grid.Row>
                 <Col></Col>
             </Container>
