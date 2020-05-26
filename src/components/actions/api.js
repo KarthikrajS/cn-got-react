@@ -3,13 +3,13 @@ import axios from 'axios';
 export default{
     battleData:{
         battleDataList:()=>
-            axios.post("/api/battleData/list").then(res => res.data),
+            axios.post("http://career-ninja-got.herokuapp.com/api/battleData/list").then(res => res.data),
         battleKingsList:()=>
             axios.post("/api/battleData/kings").then(res => res.data),
         battleTypesList:()=>
             axios.post("/api/battleData/types").then(res => res.data),
         battleDataCount:data=>
-            axios.post("/api/battleData/count",{data}).then(res => res.data),
+            axios.post("http://career-ninja-got.herokuapp.com/api/battleData/count",{data}).then(res => res.data),
         battleBasedOnLocation:location=>
             axios.post("/api/battleData/battleBasedOnLocation",{location}).then(res => res.data),
         battleBasedOnTypes: type=>
