@@ -117,7 +117,7 @@ class BattleDetailsPage extends React.Component{
                 <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
                     <Card.Body>
                         <div className="houseImg" ><img src={data} style={{"weight":"50px","height":"50px"}} ></img></div>
-                        <div className="number">{text===null? text:''}</div>
+                        <div className="number">{text!==null? text:''}</div>
                     </Card.Body>
                 </Card>
             </Grid.Column>
@@ -184,7 +184,7 @@ class BattleDetailsPage extends React.Component{
                             {battle.length !==0 &&
                             <Card  bg="dark" text="white"  style={{"width": "100%","fontSize":"15px"}}
                                    className="text-center p-3" >
-                                {battle[0].lcoation+", "+ battle[0].region}</Card>
+                                {battle[0].location+", "+ battle[0].region}</Card>
                             }
                         </Grid.Column>
 
@@ -205,7 +205,7 @@ class BattleDetailsPage extends React.Component{
             </Container>
             }
             <br/>
-            <Container style={{"marginLeft":"1%"}}>
+            <Container>
                 <Grid.Row style={{"marginRight":"1.5%"}}>
                     {battle.length!==0 && battle[0].attacker_commander!=="" && this.buildCommanderCards(battle[0].attacker_commander) }
                     <hr/>
