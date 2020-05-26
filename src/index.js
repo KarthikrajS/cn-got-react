@@ -5,6 +5,7 @@ import './index.css'
 import {BrowserRouter,Route} from 'react-router-dom'
 import App from './App';
 import 'semantic-ui-css/semantic.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from './rootReducer';
 import {Provider} from 'react-redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
