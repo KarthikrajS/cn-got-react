@@ -9,7 +9,8 @@ const App =() => {
       <div>
           <div>
             <Route path="/" exact component={HomePage}/>
-            <Route path="/battleDetail" exact component={BattleDetailsPage}/>
+            <Route path="/search" exact component={HomePage}/>
+            <Route path="/battleDetail/:token" exact component={BattleDetailsPage}/>
           </div>
 
       </div>

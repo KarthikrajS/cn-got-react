@@ -43,19 +43,18 @@ class BattleDetailsPage extends React.Component{
 
     }
     componentDidMount() {
-        this.updateState()
-        const  params = new URLSearchParams(window.location.search)
-        if(params.has('battleName'))
-            this.props.battleDetails(params.get('battleName')).then(battle=>{
+        if(localStorage.getItem('battlePage'))
+            this.props.battleDetails(localStorage.getItem('battlePage')).then(battle=>{
                 this.setState({battle:battle[0]})
             })
         this.updateState()
+
     }
 
     componentWillMount() {
-        const  params = new URLSearchParams(window.location.search)
-        if(params.has('battleName'))
-            this.props.battleDetails(params.get('battleName')).then(battle=>{
+
+
+            this.props.battleDetails(this.props.match.params.token).then(battle=>{
                 this.setState({battle:battle[0]})
                 localStorage.setItem('battlePage',battle[0])
             })
@@ -134,6 +133,7 @@ class BattleDetailsPage extends React.Component{
     updateState(){
         this.setState({isLoading :!this.state.isLoading})
     }
+
     buildHouseCard(housename,text){
         console.log(housename)
         var name =housename.split(" ").join("").split("'").join("").toLocaleLowerCase()
@@ -198,7 +198,7 @@ class BattleDetailsPage extends React.Component{
         const {isBattle} = this.props
         return(<div style={{"font-family": "Game of Thrones"}}>
 
-            <TopNavigation updateParent={this.updateState.bind(this)}/>
+            <TopNavigation updateParent={this.updateState.bind(this)} updateSecondaryMenu/>
 
             <Container style={{"marginTop":"1%"}}>
                 <Grid>
@@ -274,7 +274,12 @@ class BattleDetailsPage extends React.Component{
 
 BattleDetailsPage.prototypes ={
     battleDetails: PropTypes.func.isRequired,
-    isBattle : PropTypes.bool.isRequired
+    isBattle : PropTypes.bool.isRequired,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            token:PropTypes.string.isRequired
+        }).isRequired
+    }).isRequired
 }
 
 function mapStateToProps(state) {

@@ -5,7 +5,8 @@ import {Dropdown} from 'semantic-ui-react';
 import {Navbar, NavItem, Button, Badge} from "react-bootstrap";
 import {Link} from 'react-router-dom';
 import search from '../icons/search.png'
-import expandarrow from '../icons/expandarrow.png'
+import expandarrow from '../icons/expandarrow.png';
+import {useHistory} from 'react-router-dom';
 
 import {battleDataList,battleDataCount,battleKingsList,battleTypesList} from '../actions/battleData'
 
@@ -140,7 +141,6 @@ class TopNavigation extends React.Component{
 
     searchNavigation(){
         this.setState({secondaryMenu: !this.state.secondaryMenu})
-        console.log(this.state.secondaryMenu)
     }
 
     render () {
@@ -178,7 +178,7 @@ class TopNavigation extends React.Component{
                     </NavItem>
                     }
                 </Navbar>
-                {(! new URLSearchParams(window.location.search).has('battleName') ) && secondaryMenu && <div className="secondaryNavBar">
+                {(! new URLSearchParams(window.location.search).has('battleName') ) && (localStorage.getItem('bp')!==true) && secondaryMenu && <div className="secondaryNavBar">
                     <Navbar bg="dark" className="align-content-md-end" style={{"font-family": "Game of Thrones"}}>
                         <NavItem className="dropdown" >
                             { !isLocation && <Dropdown xs={12} lg={3}
@@ -253,6 +253,9 @@ function mapStateToProps(state) {
         isLocation: !!state.locations,
         isKings : !!state.kings,
         isTypes: !!state.battleTypes,
+        history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired
         // userType:decode(localStorage.iotJWT).userType
     }
 }

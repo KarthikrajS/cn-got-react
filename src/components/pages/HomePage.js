@@ -17,7 +17,8 @@ class HomePage extends React.Component {
         battles:[],
         king:null,
         type:null,
-        searchBattle:[]
+        searchBattle:[],
+        noSearchData: false
     }
 
     componentWillMount() {
@@ -29,7 +30,7 @@ class HomePage extends React.Component {
         // }
         // if (JSON.parse(localStorage.getItem("location")) === null){
         this.setState({type:null})
-        console.log(this.state.searchBattle)
+        localStorage.removeItem('battlePage')
         //}
         // this.setState(prevState=>({
         //     location: prevState.location
@@ -42,7 +43,6 @@ class HomePage extends React.Component {
         const  params = new URLSearchParams(window.location.search)
         if(this.state.isLoading===true && (params.has('king'))){
             this.updateState()
-            console.log("url")
             if(params.has('type') && params.has('location')){
                 this.props.search({king:params.get('king'),type:params.get('type'),location:params.get('location')}).then(battles=>{
                     this.setState({searchBattle:battles})
@@ -101,9 +101,10 @@ class HomePage extends React.Component {
     }
     createBattleCards(battles){
         var html=[]
+
         battles.forEach(battle=>{
             html.push(
-                <Link to={"/battleDetail/?battleName="+battle.name} >
+                <Link to={"/battleDetail/"+battle.name} >
                     <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
                         <Card.Title>{battle.name}</Card.Title>
                         <Card.Subtitle>{battle.region}</Card.Subtitle>
@@ -129,7 +130,7 @@ class HomePage extends React.Component {
     }
     render() {
         const {isLocation,isSearchBattle} = this.props
-        const {location,battles,king,type,searchBattle} = this.state
+        const {location,battles,king,type,searchBattle,noSearchData} = this.state
         return (
 
             <div>
@@ -203,9 +204,7 @@ class HomePage extends React.Component {
                             </CardColumns>
                         </CardDeck>
                     </CardGroup>}
-                    {console.log((JSON.parse(localStorage.getItem("king")) !== null &&  king !== null))}
                     {
-
                         (JSON.parse(localStorage.getItem("king")) !== null &&  king !== null) && <div>
                             <CardGroup>
                                 <CardDeck style={{"font-family": "Game of Thrones"}} >
@@ -227,6 +226,25 @@ class HomePage extends React.Component {
                             </CardGroup>
                         </div>
                     }
+                    {   (!(localStorage.getItem("location")) === true && location === null)
+                    &&  (!(localStorage.getItem("type")) === true &&  type === null)
+                    &&  (!(localStorage.getItem("king")) === true &&  king === null)
+                    && !isSearchBattle &&
+                        <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
+                            <Card.Body>
+                                <Card.Text>
+                                    <Row>
+                                        <Col xs={10}>No Battle Found</Col>
+                                    </Row>
+                                    <hr/>
+                                    <Row>
+                                        <Col xs={10}>This Battle Didn't Occur!</Col>
+                                    </Row>
+
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    }
                 </div>
             </div>)
     }
@@ -245,7 +263,7 @@ HomePage.propTypes = {
 function mapStateToProps(state) {
     return {
         isLocation: !!state.location,
-        isSearchBattle : !! (state.searchBattle || localStorage.getItem('searchBattle')!=="null")
+        isSearchBattle : !! (state.searchBattle || localStorage.getItem('searchBattle')!==null)
     }
 }
 
