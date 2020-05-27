@@ -3,7 +3,7 @@ import axios from 'axios';
 export default{
     battleData:{
         battleDataList:()=>
-            axios.post("/battleData/list").then(res => res.data),
+            axios.post("/api/battleData/list").then(res => res.data),
         battleKingsList:()=>
             axios.post("/api/battleData/kings").then(res => res.data),
         battleTypesList:()=>
