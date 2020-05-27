@@ -65,7 +65,7 @@ class BattleDetailsPage extends React.Component{
         return(
             <Grid.Column>
             <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
-            <div>{this.aquireHouse("death")}</div>
+                <div><img src={this.aquireHouse("death")} style={{"weight":"50px","height":"50px"}} ></img></div>
             <div>{key}:{vaue}</div>
         </Card>
         </Grid.Column>)
