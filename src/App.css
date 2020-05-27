@@ -46,9 +46,9 @@
   }
 }
 
-@media(min-width: 320px) {
+@media only screen and (max-width: 480px) {
   .card-columns .card {
-    width: auto;
+    width: auto
   }
 }
 

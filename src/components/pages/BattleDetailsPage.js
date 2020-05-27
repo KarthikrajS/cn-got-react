@@ -32,6 +32,7 @@ import tommenbaratheon from '../icons/tommenbaratheon.jpg'
 import mancerayder from '../icons/mancerayder.png'
 import attack from '../icons/attack.png'
 import defend from '../icons/defend.png'
+import death from '../icons/death.png'
 
 class BattleDetailsPage extends React.Component{
 
@@ -41,13 +42,33 @@ class BattleDetailsPage extends React.Component{
         imageURL:null,
 
     }
+    componentDidMount() {
+        this.updateState()
+        const  params = new URLSearchParams(window.location.search)
+        if(params.has('battleName'))
+            this.props.battleDetails(params.get('battleName')).then(battle=>{
+                this.setState({battle:battle[0]})
+            })
+        this.updateState()
+    }
+
     componentWillMount() {
         const  params = new URLSearchParams(window.location.search)
         if(params.has('battleName'))
             this.props.battleDetails(params.get('battleName')).then(battle=>{
-                this.setState({battle:battle})
+                this.setState({battle:battle[0]})
+                localStorage.setItem('battlePage',battle[0])
             })
         this.updateState()
+    }
+    deathCapture(key,vaue){
+        return(
+            <Grid.Column>
+            <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
+            <div>{this.aquireHouse("death")}</div>
+            <div>{key}:{vaue}</div>
+        </Card>
+        </Grid.Column>)
     }
     aquireHouse(housename){
         if (housename === "tully" )
@@ -86,6 +107,8 @@ class BattleDetailsPage extends React.Component{
             return defend
         if(housename === "attack")
             return attack
+        if(housename ==="death")
+            return death
 
     }
     aquireImage(kingName){
@@ -112,6 +135,7 @@ class BattleDetailsPage extends React.Component{
         this.setState({isLoading :!this.state.isLoading})
     }
     buildHouseCard(housename,text){
+        console.log(housename)
         var name =housename.split(" ").join("").split("'").join("").toLocaleLowerCase()
         var data = this.aquireHouse(name)
         var houseCard = []
@@ -121,6 +145,7 @@ class BattleDetailsPage extends React.Component{
                 <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
                     <Card.Body>
                         <div className="houseImg" ><img src={data} style={{"weight":"50px","height":"50px"}} ></img></div>
+                        <hr/>
                         <div className="number">{text!==null? text:''}</div>
                     </Card.Body>
                 </Card>
@@ -128,12 +153,7 @@ class BattleDetailsPage extends React.Component{
         )
         return houseCard
     }
-    deathCapture(key,val){
-        return(<Card>
-            <Card.Title>{key}</Card.Title>
-            <Card.Body>{val===0?"No":"Yes"}</Card.Body>
-        </Card>)
-    }
+
     buildCommanderCards(cmd){
         var cmdCard =[]
         var cmdColl =[]
@@ -143,7 +163,7 @@ class BattleDetailsPage extends React.Component{
                 <Grid.Column xs={3} md={3} style={{"marginLeft":"1%"}}>
                     <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
                         <Card.Body>
-                            {<div className="cmdName">{cmds}</div>}
+                            {<div className="cmdName">Commander : {cmds}</div>}
                         </Card.Body>
                     </Card>
                 </Grid.Column>
@@ -187,13 +207,13 @@ class BattleDetailsPage extends React.Component{
                             {battle.length !==0 &&
                             <Card  bg="dark" text="white"  style={{"width": "100%","fontSize":"15px"}}
                                    className="text-center p-3" >
-                                {battle[0].name}
+                                {battle.name}
                             </Card>
                             }
                             {battle.length !==0 &&
                             <Card  bg="dark" text="white"  style={{"width": "100%","fontSize":"15px"}}
                                    className="text-center p-3" >
-                                {battle[0].location+", "+ battle[0].region}</Card>
+                                {battle.location+", "+ battle.region}</Card>
                             }
                         </Grid.Column>
 
@@ -202,44 +222,50 @@ class BattleDetailsPage extends React.Component{
                     </Grid.Row>
                 </Grid>
             </Container>
-
+            <br/>
+            <Container>
+                <Grid.Row style={{"marginRight":"2.5%"}}>
+                    {battle.length!==0 && battle.attacker_commander!=="" && this.buildCommanderCards(battle.attacker_commander) }
+                    <hr/>
+                    {battle.length!==0 && battle.defender_commander!=="" && this.buildCommanderCards(battle.defender_commander) }
+                </Grid.Row>
+            </Container>
             {!isBattle && battle.length !==0 &&
             <Container style={{"marginTop":"1%"}} >
-                <Grid.Row style={{"marginRight":"1.5%"}} >
+                <Grid.Row style={{"marginRight":"2.5%"}} >
                     {
-                        battle.length !==0 && this.buildKingCards(battle[0].attacker_king,battle[0].attacker_outcome=== 'win' ?'green':'red')}
+                        battle.length !==0 && this.buildKingCards(battle.attacker_king,battle.attacker_outcome=== 'win' ?'green':'red')}
                     <hr/>
-                    { battle.length !==0 && this.buildKingCards(battle[0].defender_king,battle[0].attacker_outcome!== 'win' ?'green':'red')}
+                    { battle.length !==0 && this.buildKingCards(battle.defender_king,battle.attacker_outcome!== 'win' ?'green':'red')}
                 </Grid.Row>
             </Container>
             }
+
+            <br/>
+            <Container >
+                {console.log(battle)}
+                <Grid.Row style={{"marginRight":"1.5%"}}>
+                    {battle.length !==0 && battle.attacker_1 !=="" &&this.buildHouseCard(battle.attacker_1,battle.attacker_1)}
+                    {battle.length !==0 && battle.attacker_2 !=="" && this.buildHouseCard(battle.attacker_2,battle.attacker_2)}
+                    {battle.length !==0 && battle.attacker_3 !=="" && this.buildHouseCard(battle.attacker_3,battle.attacker_3)}
+                    {battle.length !==0 && battle.attacker_4 !=="" && this.buildHouseCard(battle.attacker_4,battle.attacker_4)}
+
+                    <hr/>
+
+                    {battle.length !==0 && battle.defender_1 !=="" && this.buildHouseCard(battle.defender_1,battle.defender_1)}
+                    {battle.length !==0 && battle.defender_2 !=="" && this.buildHouseCard(battle.defender_2,battle.defender_2)}
+                    {battle.length !==0 && battle.defender_3 !=="" && this.buildHouseCard(battle.defender_3,battle.defender_3)}
+                    {battle.length !==0 && battle.defender_4 !=="" && this.buildHouseCard(battle.defender_4,battle.defender_4)}
+                </Grid.Row>
+            </Container>
             <br/>
             <Container>
                 <Grid.Row style={{"marginRight":"1.5%"}}>
-                    {battle.length!==0 && battle[0].attacker_commander!=="" && this.buildCommanderCards(battle[0].attacker_commander) }
+                    {battle.length !==0 &&this.buildHouseCard("attack",battle.attacker_size)}
+                    {battle.length !==0 &&this.deathCapture("Capture",(battle.major_capture?"YES":"NO"))}
                     <hr/>
-                    {battle.length!==0 && battle[0].defender_commander!=="" && this.buildCommanderCards(battle[0].defender_commander) }
-                </Grid.Row>
-            </Container>
-            <Container >
-                {console.log(battle[0])}
-                <Grid.Row style={{"marginLeft":"1%","marginRight":"1.5%"}}>
-                    {battle.length !==0 && battle[0].attacker_1 !=="" &&this.buildHouseCard(battle[0].attacker_1,null)}
-                    {battle.length !==0 && battle[0].attacker_2 !=="" && this.buildHouseCard(battle[0].attacker_2,null)}
-                    {battle.length !==0 && battle[0].attacker_3 !=="" && this.buildHouseCard(battle[0].attacker_3,null)}
-                    {battle.length !==0 && battle[0].attacker_4 !=="" && this.buildHouseCard(battle[0].attacker_4,null)}
-
-                    <hr/>
-
-                    {battle.length !==0 && battle[0].defender_1 !=="" && this.buildHouseCard(battle[0].defender_1,null)}
-                    {battle.length !==0 && battle[0].defender_2 !=="" && this.buildHouseCard(battle[0].defender_2,null)}
-                    {battle.length !==0 && battle[0].defender_3 !=="" && this.buildHouseCard(battle[0].defender_3,null)}
-                    {battle.length !==0 && battle[0].defender_4 !=="" && this.buildHouseCard(battle[0].defender_4,null)}
-                </Grid.Row>
-                <Grid.Row style={{"marginRight":"1.5%"}}>
-                    {battle.length !==0 &&this.buildHouseCard(attack,battle[0].attacker_size)}
-                    <hr/>
-                    {battle.length !==0 &&this.buildHouseCard(defend,battle[0].defender_size)}
+                    {battle.length !==0 &&this.deathCapture("Death",(battle.major_death ?"YES":"NO"))}
+                    {battle.length !==0 &&this.buildHouseCard("defend",battle.defender_size)}
                 </Grid.Row>
             </Container>
         </div>)
