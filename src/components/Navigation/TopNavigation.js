@@ -27,6 +27,7 @@ class TopNavigation extends React.Component{
         battleCount:0,
         type:null,
         secondaryMenu : false,
+        navigator : true,
         badge:''
     }
     clearSelection(){
@@ -70,6 +71,7 @@ class TopNavigation extends React.Component{
         params.delete('type')
         window.history.replaceState({},'','/'+params)
     }
+
     handleChange = (e,{value}) =>{
         e.preventDefault()
         this.props.updateParent()
@@ -110,42 +112,27 @@ class TopNavigation extends React.Component{
         localStorage.setItem('type',JSON.stringify(value));
         this.props.updateParent()
     }
-    battleSearch=(e)=> {
-        e.preventDefault()
-        const{king,type,location} = this.state
-        this.setState({badge:''})
+    battleSearch(king,location,type) {
+
         if(king!==null){
             if( type !== null && location !==null){
-                let url =(window.location)
-                let params = new URLSearchParams(url.search.slice(1));
-                params.set('king',king)
-                params.set('type',type)
-                params.set('location',location)
-                window.history.replaceState({},'','/search?'+params)
-            }else{
-                let url =(window.location)
-                let params = new URLSearchParams(url.search.slice(1));
-                params.set('king',king)
-                window.history.replaceState({},'','/search?'+params)
+                return "/search/king="+king+"&type="+type+"&location="+location
             }
-            this.clearSelection()
-
-            //this.clearSelection()
-            //this.loadLocation()
-            //this.loadType()
-            //this.loadKing()
-
-            this.props.updateParent()
         }
     }
-
+    updateParent(){
+        this.setState({isLoading :!this.state.isLoading})
+    }
+    searchNavigator(){
+        this.setState({navigator: !this.state.navigator})
+    }
     searchNavigation(){
         this.setState({secondaryMenu: !this.state.secondaryMenu})
     }
 
     render () {
 
-        const {locations,battleCount,location,secondaryMenu,kings,battleTypes,king,type,badge} = this.state;
+        const {locations,battleCount,location,secondaryMenu,kings,battleTypes,king,type,badge,navigator} = this.state;
         const {isLocation,isKings,isTypes} = this.props;
         return(
             <div>
@@ -166,7 +153,7 @@ class TopNavigation extends React.Component{
                         <Badge variant="light" style={{"margin-left": "5px", "font-size": "12px"}}>{battleCount}</Badge>
                         </span>
                         </Button>
-                        <Button onClick={() => this.searchNavigation()} variant="dark"
+                        { localStorage.getItem('Navigation') === "Yes" && <Button onClick={() => this.searchNavigation()} variant="dark"
                                 style={{"font-size": "10px", "margin-left": "5px"}}>
                             <span>More</span>
                             <span>
@@ -174,24 +161,13 @@ class TopNavigation extends React.Component{
                             <img style={{"width": "12px", "height": "12px"}} src={expandarrow}></img>
                         </Badge>
                         </span>
-                        </Button>
+                        </Button>}
                     </NavItem>
                     }
                 </Navbar>
                 {(! new URLSearchParams(window.location.search).has('battleName') ) && (localStorage.getItem('bp')!==true) && secondaryMenu && <div className="secondaryNavBar">
                     <Navbar bg="dark" className="align-content-md-end" style={{"font-family": "Game of Thrones"}}>
-                        <NavItem className="dropdown" >
-                            { !isLocation && <Dropdown xs={12} lg={3}
-                                                       placeholder='Select Battle Field'
-                                                       fluid
-                                                       selection
-                                                       search
-                                                       value={location}
-                                                       options={locations}
-                                                       onChange={this.handleChange}
-                            />}
-                        </NavItem>
-                        <hr/>
+
                         <NavItem className="dropdown">
 
                             { !isKings && <Dropdown
@@ -204,6 +180,20 @@ class TopNavigation extends React.Component{
                                 onChange={this.handleKingChange}
                             />}
                         </NavItem>
+                            <hr/>
+                        <NavItem className="dropdown" >
+                            { !isLocation &&
+                            <Dropdown xs={12} lg={3}
+                                   placeholder='Select Battle Field'
+                                   fluid
+                                   selection
+                                   search
+                                   value={location}
+                                   options={locations}
+                                   onChange={this.handleChange}
+                            />}
+                        </NavItem>
+
                         <hr/>
                         <NavItem className="dropdown">
 
@@ -217,8 +207,8 @@ class TopNavigation extends React.Component{
                                 onChange={this.handleTypeChange}
                             />}
                         </NavItem>
-                        <NavItem>
-                            <Button onClick={this.battleSearch} variant="danger"
+                        {king!==null && location!==null && type!==null && <NavItem>
+                            <Button  as={Link} to={(this.battleSearch(king,location,type))} variant="danger"
                                     style={{"font-size": "10px", "margin-left": "5px"}}>
                                 <span>Search</span>
                                 <span>
@@ -227,8 +217,7 @@ class TopNavigation extends React.Component{
                         </Badge>
                         </span>
                             </Button>
-
-                        </NavItem>
+                        </NavItem>}
                     </Navbar>
                 </div>
                 }
@@ -255,7 +244,7 @@ function mapStateToProps(state) {
         isTypes: !!state.battleTypes,
         history: PropTypes.shape({
         push: PropTypes.func.isRequired
-    }).isRequired
+        }).isRequired
         // userType:decode(localStorage.iotJWT).userType
     }
 }

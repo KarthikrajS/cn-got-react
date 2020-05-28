@@ -48,16 +48,16 @@ class BattleDetailsPage extends React.Component{
                 this.setState({battle:battle[0]})
             })
         this.updateState()
+        this.updateSecondaryMenu()
 
     }
 
     componentWillMount() {
-
-
             this.props.battleDetails(this.props.match.params.token).then(battle=>{
                 this.setState({battle:battle[0]})
                 localStorage.setItem('battlePage',battle[0])
             })
+        localStorage.setItem('Navigation',"No")
         this.updateState()
     }
     deathCapture(key,vaue){
@@ -133,6 +133,9 @@ class BattleDetailsPage extends React.Component{
     updateState(){
         this.setState({isLoading :!this.state.isLoading})
     }
+    updateSecondaryMenu(){
+        this.setState({navigator: !this.state.navigator})
+    }
 
     buildHouseCard(housename,text){
         console.log(housename)
@@ -198,7 +201,8 @@ class BattleDetailsPage extends React.Component{
         const {isBattle} = this.props
         return(<div style={{"font-family": "Game of Thrones"}}>
 
-            <TopNavigation updateParent={this.updateState.bind(this)} updateSecondaryMenu/>
+            <TopNavigation updateParent={this.updateState.bind(this)}
+                           searchNavigator={this.updateSecondaryMenu.bind(this)}/>
 
             <Container style={{"marginTop":"1%"}}>
                 <Grid>

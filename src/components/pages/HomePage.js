@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Card, CardColumns, CardDeck, CardGroup, Col,Row,Container} from 'react-bootstrap'
+import {Card, CardColumns, CardDeck, CardGroup, Col, Row, Container, Navbar, NavItem, Button, Badge} from 'react-bootstrap'
 import TopNavigation from "../Navigation/TopNavigation";
 import {battleBasedOnLocation,battleBasedOnTypes,battleBasedOnKings,search} from '../actions/battleData';
 import {Link} from 'react-router-dom';
 import attack from '../icons/attack.png';
 import defend from '../icons/defend.png';
+import {Dropdown} from "semantic-ui-react";
 
 
 class HomePage extends React.Component {
@@ -22,77 +23,42 @@ class HomePage extends React.Component {
     }
 
     componentWillMount() {
-        // if (JSON.parse(localStorage.getItem("location")) === null){
         this.setState({location:null})
-        // }
-        // if (JSON.parse(localStorage.getItem("king")) === null){
         this.setState({king:null})
-        // }
-        // if (JSON.parse(localStorage.getItem("location")) === null){
         this.setState({type:null})
         localStorage.removeItem('battlePage')
-        //}
-        // this.setState(prevState=>({
-        //     location: prevState.location
-        // }))
+        localStorage.setItem('Navigation',"Yes")
+
 
     }
-
-    componentDidUpdate(){
-
-        const  params = new URLSearchParams(window.location.search)
-        if(this.state.isLoading===true && (params.has('king'))){
-            this.updateState()
-            if(params.has('type') && params.has('location')){
-                this.props.search({king:params.get('king'),type:params.get('type'),location:params.get('location')}).then(battles=>{
-                    this.setState({searchBattle:battles})
-                    localStorage.setItem('searchBattle',battles)
-                })
-            }else{
-                this.props.search({king:params.get('king')}).then(battles=>{
-                    this.setState({searchBattle:battles})
-                    localStorage.setItem('searchBattle',battles)
-                })
-
-            }
-            localStorage.removeItem('king')
-            localStorage.removeItem('type')
-            localStorage.removeItem('location')
-            this.updateState()
-            console.log(this.props.isSearchBattle)
-        }
+    componentDidUpdate(prevProps,prevState){
+        if(prevState.location === this.state.location){
         if (this.state.isLoading===true && JSON.parse(localStorage.getItem("location")) !== null) {
-            this.setState({searchBattle: []})
+
             this.props.battleBasedOnLocation(JSON.parse(localStorage.getItem("location")))
                 .then(battles => {
                     this.setState({battles: battles, location: JSON.parse(localStorage.getItem("location"))})
+                    console.log(this.state.location)
                 })
-            this.updateState()
         }
+        }
+        if(prevState.king === this.state.king) {
+            if (this.state.isLoading === true && JSON.parse(localStorage.getItem("king")) !== null) {
+
+                this.props.battleBasedOnKings(JSON.parse(localStorage.getItem("king")))
+                    .then(battles => {
+                        this.setState({battles: battles, king: JSON.parse(localStorage.getItem("king"))})
+                    })
+            }
+        }
+        if(prevState.type === this.state.type){
         if (this.state.isLoading===true && JSON.parse(localStorage.getItem("type")) !== null) {
 
             this.props.battleBasedOnTypes(JSON.parse(localStorage.getItem("type")))
                 .then(battles => {
                     this.setState({battles: battles, type: JSON.parse(localStorage.getItem("type"))})
                 })
-            this.updateState()
         }
-
-        if (this.state.isLoading===true && JSON.parse(localStorage.getItem("king")) !== null) {
-
-            this.props.battleBasedOnKings(JSON.parse(localStorage.getItem("king")))
-                .then(battles => {
-                    this.setState({battles: battles, king: JSON.parse(localStorage.getItem("king"))})
-                })
-            this.updateState()
-        }
-        if (this.state.isLoading===true && JSON.parse(localStorage.getItem("type")) !== null) {
-
-            this.props.battleBasedOnTypes(JSON.parse(localStorage.getItem("type")))
-                .then(battles => {
-                    this.setState({battles: battles, location: JSON.parse(localStorage.getItem("type"))})
-                })
-            this.updateState()
         }
     }
 
@@ -129,17 +95,14 @@ class HomePage extends React.Component {
         return html;
     }
     render() {
-        const {isLocation,isSearchBattle} = this.props
-        const {location,battles,king,type,searchBattle,noSearchData} = this.state
+        const {location,battles,king,type} = this.state
         return (
-
             <div>
                 <TopNavigation updateParent={this.updateState.bind(this)}/>
-                <div  className="ui container " style={{"width":"800px"}}>
 
+                <div  className="ui container " style={{"width":"800px"}}>
                     <br/>
                     {
-
                         (JSON.parse(localStorage.getItem("location")) === null && location === null)
                         &&  (JSON.parse(localStorage.getItem("type")) === null &&  type === null)
                         &&  (JSON.parse(localStorage.getItem("king")) === null &&  king === null)
@@ -196,14 +159,7 @@ class HomePage extends React.Component {
                             </CardGroup>
                         </div>
                     }
-                    {!isSearchBattle &&
-                    <CardGroup>
-                        <CardDeck style={{"font-family": "Game of Thrones"}} >
-                            <CardColumns>
-                                {this.createBattleCards(searchBattle)}
-                            </CardColumns>
-                        </CardDeck>
-                    </CardGroup>}
+
                     {
                         (JSON.parse(localStorage.getItem("king")) !== null &&  king !== null) && <div>
                             <CardGroup>
@@ -225,25 +181,6 @@ class HomePage extends React.Component {
                                 </CardDeck>
                             </CardGroup>
                         </div>
-                    }
-                    {   (!(localStorage.getItem("location")) === true && location === null)
-                    &&  (!(localStorage.getItem("type")) === true &&  type === null)
-                    &&  (!(localStorage.getItem("king")) === true &&  king === null)
-                    && !isSearchBattle &&
-                        <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
-                            <Card.Body>
-                                <Card.Text>
-                                    <Row>
-                                        <Col xs={10}>No Battle Found</Col>
-                                    </Row>
-                                    <hr/>
-                                    <Row>
-                                        <Col xs={10}>This Battle Didn't Occur!</Col>
-                                    </Row>
-
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
                     }
                 </div>
             </div>)
