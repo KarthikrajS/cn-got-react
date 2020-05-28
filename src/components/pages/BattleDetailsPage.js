@@ -164,7 +164,7 @@ class BattleDetailsPage extends React.Component{
         cmdColl[0].forEach(cmds=>{
             cmdCard.push(
                 <Grid.Column xs={3} md={3} style={{"marginLeft":"1%"}}>
-                    <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
+                    <Card bg="dark" text="white"  style={{"width": "50%"}} className="text-center p-3">
                         <Card.Body>
                             {<div className="cmdName">Commander : {cmds}</div>}
                         </Card.Body>
@@ -227,7 +227,7 @@ class BattleDetailsPage extends React.Component{
                 </Grid>
             </Container>
             <br/>
-            <Container>
+            <Container xs={10}>
                 <Grid.Row style={{"marginRight":"2.5%"}}>
                     {battle.length!==0 && battle.attacker_commander!=="" && this.buildCommanderCards(battle.attacker_commander) }
                     <hr/>

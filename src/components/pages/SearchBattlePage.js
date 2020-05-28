@@ -24,6 +24,8 @@ class SearchBattlePage extends React.Component{
 
         var token = this.props.match.params.token
         var params= token.split('&')
+        localStorage.setItem('params',JSON.stringify(params))
+        params  = JSON.parse(localStorage.getItem('params'))
         this.props.search({king:params[0].split('=')[1],type:params[1].split('=')[1],location:params[2].split('=')[1]})
             .then(battles=>{
                 console.log(battles)
