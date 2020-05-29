@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-
 import {connect} from 'react-redux';
 import {search} from '../actions/battleData'
 import {Card, CardColumns, CardDeck, CardGroup, Col, Row, Container} from "react-bootstrap";
@@ -8,7 +7,7 @@ import {Link} from "react-router-dom";
 import attack from "../icons/attack.png";
 import defend from "../icons/defend.png";
 import TopNavigation from "../Navigation/TopNavigation";
-
+import './SearchBattlePage.css'
 
 class SearchBattlePage extends React.Component{
     state={
@@ -20,8 +19,8 @@ class SearchBattlePage extends React.Component{
     updateState(){
         this.setState({isLoading: this.setState.isLoading})
     }
-    componentDidMount() {
 
+    componentDidMount() {
         var token = this.props.match.params.token
         var params= token.split('&')
         localStorage.setItem('params',JSON.stringify(params))
@@ -71,14 +70,14 @@ class SearchBattlePage extends React.Component{
 
     render() {
         const {searchBattle} = this.state
-        const {isSearchBattle} = this.state
+        const {isSearchBattle} = this.props
 
 
         return(<div>
             <TopNavigation updateParent={this.updateState.bind(this)}/>
             <div  className="ui container " style={{"width":"800px"}}>
                 <Container>
-                {!isSearchBattle && searchBattle!==null &&
+                { searchBattle!==null &&
                 <CardGroup>
                     <CardDeck style={{"fontFamily": "Game of Thrones"}} >
                         <CardColumns>
@@ -86,21 +85,25 @@ class SearchBattlePage extends React.Component{
                         </CardColumns>
                     </CardDeck>
                 </CardGroup>}
-                {!isSearchBattle && searchBattle===null  &&
-                <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
-                    <Card.Body>
-                        <Card.Text>
-                            <Row>
-                                <CardColumns xs={10}>No Battle Found</CardColumns>
-                            </Row>
-                            <hr/>
-                            <Row>
-                                <Col xs={10}>This Battle Didn't Occur!</Col>
-                            </Row>
+                { (searchBattle===null || searchBattle.length===0 )  &&
+                <CardGroup>
+                    <CardDeck style={{"fontFamily": "Game of Thrones"}} >
+                        <CardColumns>
+                            <Card bg="dark" text="white" id="battleCard" style={{"width": "100%"}} className="text-center p-3">
+                                <Card.Title >No Battle Found</Card.Title>
+                                <Card.Body>
+                                    <Card.Text>
 
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
+
+                                            <Card.Subtitle >This Battle Did Not Occur!</Card.Subtitle>
+
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </CardColumns>
+                    </CardDeck>
+                </CardGroup>
+
                 }
                 </Container>
             </div>

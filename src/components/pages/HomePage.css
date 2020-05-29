@@ -1,0 +1,28 @@
+@viewport{
+    width:100vw
+}
+
+div#welcome{
+    margin-left: 35%;
+    margin-top: 8%;
+}
+    .card-deck .card-columns .card {
+        width: 650px;
+
+    }
+
+@media only screen and (max-width: 480px) {
+    .card-deck .card-columns .card {
+        width: 300px;
+
+    }
+    div#welcome{
+        margin-left: 10%;
+        margin-top: 17.5%;
+    }
+}
+
+
+
+
+

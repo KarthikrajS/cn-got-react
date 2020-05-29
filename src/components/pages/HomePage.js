@@ -7,7 +7,9 @@ import {battleBasedOnLocation,battleBasedOnTypes,battleBasedOnKings,search} from
 import {Link} from 'react-router-dom';
 import attack from '../icons/attack.png';
 import defend from '../icons/defend.png';
+import './HomePage.css'
 import {Dropdown} from "semantic-ui-react";
+
 
 
 class HomePage extends React.Component {
@@ -19,7 +21,8 @@ class HomePage extends React.Component {
         king:null,
         type:null,
         searchBattle:[],
-        noSearchData: false
+        noSearchData: false,
+        dataLoaded:false
     }
 
     componentWillMount() {
@@ -28,35 +31,36 @@ class HomePage extends React.Component {
         this.setState({type:null})
         localStorage.removeItem('battlePage')
         localStorage.setItem('Navigation',"Yes")
-
+        this.setState({dataloaded:false})
 
     }
     componentDidUpdate(prevProps,prevState){
-        if(prevState.location === this.state.location){
-        if (this.state.isLoading===true && JSON.parse(localStorage.getItem("location")) !== null) {
+        console.log(this.state.isLoading)
+        if(prevState.location === this.state.location || this.state.dataLoaded){
+        if ( JSON.parse(localStorage.getItem("location")) !== null) {
 
             this.props.battleBasedOnLocation(JSON.parse(localStorage.getItem("location")))
                 .then(battles => {
-                    this.setState({battles: battles, location: JSON.parse(localStorage.getItem("location"))})
+                    this.setState({battles: battles, location: JSON.parse(localStorage.getItem("location")),dataLoaded:true})
                     console.log(this.state.location)
                 })
         }
         }
         if(prevState.king === this.state.king) {
-            if (this.state.isLoading === true && JSON.parse(localStorage.getItem("king")) !== null) {
+            if ( JSON.parse(localStorage.getItem("king")) !== null) {
 
                 this.props.battleBasedOnKings(JSON.parse(localStorage.getItem("king")))
                     .then(battles => {
-                        this.setState({battles: battles, king: JSON.parse(localStorage.getItem("king"))})
+                        this.setState({battles: battles, king: JSON.parse(localStorage.getItem("king")),dataLoaded:true})
                     })
             }
         }
         if(prevState.type === this.state.type){
-        if (this.state.isLoading===true && JSON.parse(localStorage.getItem("type")) !== null) {
+        if ( JSON.parse(localStorage.getItem("type")) !== null) {
 
             this.props.battleBasedOnTypes(JSON.parse(localStorage.getItem("type")))
                 .then(battles => {
-                    this.setState({battles: battles, type: JSON.parse(localStorage.getItem("type"))})
+                    this.setState({battles: battles, type: JSON.parse(localStorage.getItem("type")),dataLoaded:true})
                 })
         }
         }
@@ -95,58 +99,69 @@ class HomePage extends React.Component {
         return html;
     }
     render() {
-        const {location,battles,king,type} = this.state
+        const {location,battles,king,type,dataLoaded} = this.state
         return (
             <div>
                 <TopNavigation updateParent={this.updateState.bind(this)}/>
 
-                <div  className="ui container " style={{"width":"800px"}}>
+                <div  className="ui container" >
                     <br/>
                     {
-                        (JSON.parse(localStorage.getItem("location")) === null && location === null)
-                        &&  (JSON.parse(localStorage.getItem("type")) === null &&  type === null)
-                        &&  (JSON.parse(localStorage.getItem("king")) === null &&  king === null)
-                        &&
-                        <div >
+                        (JSON.parse(localStorage.getItem("location")) === null || location === null)
+                        &&  (JSON.parse(localStorage.getItem("type")) === null ||  type === null)
+                        &&  (JSON.parse(localStorage.getItem("king")) === null ||  king === null)
+                        && !dataLoaded &&
                             <Container >
                                 <CardGroup>
                                     <CardDeck style={{"font-family": "Game of Thrones"}} >
-                                        <CardColumns>
-                                            <Card style={{"width" : "690px", "height":"125px"}} bg="dark" text="white"  className="text-center p-3">
-                                                <Card.Body>
-                                                    <blockquote className="blockquote mb-0 card-body">
-                                                        <Card.Text>
-                                                            Welcome to
-                                                        </Card.Text>
-                                                    </blockquote>
-                                                </Card.Body>
-                                            </Card>
-                                        </CardColumns>
-                                        <CardColumns>
+                                        <Row lg={12} sm={12}>
+                                            <CardColumns>
+                                                <Card bg="dark" text="white" id="welcome"  className="text-center p-3 ">
+                                                    <Card.Body>
+                                                        <blockquote className="blockquote mb-0 card-body">
+                                                            <Card.Text>
+                                                                Welcome to
+                                                            </Card.Text>
+                                                        </blockquote>
+                                                    </Card.Body>
+                                                </Card>
+                                            </CardColumns>
+                                        </Row>
+                                        <Row>
 
-                                            <Card style={{"width" : "690px", "height":"100px"}}  bg="danger" text="white" className="text-center p-3">
-                                                <Card.Body>
-                                                    <Card.Title>
-                                                        Game Of Thrones
-                                                    </Card.Title>
-                                                </Card.Body>
-                                            </Card>
-                                        </CardColumns>
-                                        <CardColumns>
-                                            <Card style={{"width" : "690px", "height":"125px"}} bg="dark" text="white"  className="text-center p-3">
-                                                <Card.Body>
-                                                    <blockquote className="blockquote mb-0 card-body">
-                                                        <Card.Text>
-                                                            Battle App
-                                                        </Card.Text>
-                                                    </blockquote>
-                                                </Card.Body>
-                                            </Card>
-                                        </CardColumns>
+                                            <CardColumns>
+
+                                                <Card id="welcome"   bg="danger" text="white" className="text-center p-3">
+                                                    <Card.Body>
+                                                        <Card.Title>
+                                                            Game Of Thrones
+                                                        </Card.Title>
+                                                    </Card.Body>
+                                                </Card>
+                                            </CardColumns>
+                                        </Row>
+                                        <Row>
+
+                                            <CardColumns>
+                                                <Card bg="dark" text="white"  id="welcome"   className="text-center p-3">
+                                                    <Card.Body>
+                                                        <blockquote className="blockquote mb-0 card-body">
+                                                            <Card.Text>
+                                                                Battle App
+                                                            </Card.Text>
+                                                        </blockquote>
+                                                    </Card.Body>
+                                                </Card>
+                                            </CardColumns>
+                                        </Row>
+
+
+
                                     </CardDeck>
                                 </CardGroup>
                             </Container>
-                        </div>
+
+
                     }
                     {
                         (JSON.parse(localStorage.getItem("location")) !== null &&  location !== null) && <div>
@@ -189,7 +204,7 @@ class HomePage extends React.Component {
 
 
 HomePage.propTypes = {
-    isLocation: PropTypes.bool.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
     battleBasedOnLocation: PropTypes.func.isRequired,
     battleBasedOnKings: PropTypes.func.isRequired,
     battleBasedOnTypes: PropTypes.func.isRequired,
@@ -199,7 +214,6 @@ HomePage.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        isLocation: !!state.location,
         isSearchBattle : !! (state.searchBattle || localStorage.getItem('searchBattle')!==null)
     }
 }

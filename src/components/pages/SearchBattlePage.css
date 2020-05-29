@@ -1,0 +1,20 @@
+@viewport{
+    width:100vw
+}
+
+div#battleCard{
+  margin-top: 15%;
+    width: 200% !important;
+    margin-left: 50%;
+}
+
+.card-deck .card-columns .card{
+    margin-top: 15%;
+}
+@media only screen and (max-width: 480px) {
+    div#battleCard{
+        margin-top: 50%;
+        width: 100% !important;
+        margin-left: 0%
+    }
+}

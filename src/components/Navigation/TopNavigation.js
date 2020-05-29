@@ -74,10 +74,11 @@ class TopNavigation extends React.Component{
 
     handleChange = (e,{value}) =>{
         e.preventDefault()
+        this.setState({location:value})
         this.props.updateParent()
         this.removeParam()
         this.props.battleDataCount({type:"location",value:value}).then(count=>{
-            this.setState({battleCount: count,location:value,badge:value})
+            this.setState({battleCount: count,badge:value})
         })
         localStorage.setItem('location',JSON.stringify(value));
         localStorage.setItem('searchBattle',JSON.stringify(null))
@@ -87,11 +88,13 @@ class TopNavigation extends React.Component{
     }
     handleKingChange=(e,{value})=>{
         e.preventDefault()
+        this.setState({king:value})
         this.props.updateParent()
+
         this.removeParam()
         this.props.battleDataCount({type:"king",value:value}).then(count=>{
 
-            this.setState({battleCount: count,king:value,badge:value})
+            this.setState({battleCount: count,badge:value})
         })
         localStorage.setItem('king',JSON.stringify(value));
         localStorage.setItem('searchBattle',JSON.stringify(null))
@@ -102,10 +105,12 @@ class TopNavigation extends React.Component{
 
     handleTypeChange=(e,{value})=>{
         e.preventDefault()
+        this.setState({type:value})
         this.props.updateParent()
+
         this.removeParam()
         this.props.battleDataCount({type:"type",value:value}).then(count=>{
-            this.setState({battleCount: count,type:value,badge:value})
+            this.setState({battleCount: count,badge:value})
         })
         localStorage.removeItem('king')
         localStorage.removeItem('location')
@@ -113,10 +118,10 @@ class TopNavigation extends React.Component{
         this.props.updateParent()
     }
     battleSearch(king,location,type) {
-
         if(king!==null){
+            king = king.replace('/','%2F')
             if( type !== null && location !==null){
-                return "/search/king="+king+"&type="+type+"&location="+location
+                return '/search/king='+king+'&type='+type+'&location='+location
             }
         }
     }

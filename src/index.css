@@ -1,3 +1,6 @@
+@viewport{
+  width:100vw
+}
 body {
   margin: 0;
   font-family:"Game of Thrones";
@@ -32,9 +35,9 @@ code {
   width:30%
 }
 
-@media(max-width: 600px) {
+@media only screen and (max-width: 480px){
   body{
-    background-size: 100% 70% ;
+    background-size: 100% 70%  !important;
     background-position: center !important;
   }
 }
