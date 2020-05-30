@@ -1,15 +1,18 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import styled from 'styled-components'
+import Slider from 'react-slick'
 import {connect} from 'react-redux';
-import {Card, CardColumns, CardDeck, CardGroup, Col, Row, Container, Navbar, NavItem, Button, Badge} from 'react-bootstrap'
+import {Card, CardColumns, CardDeck, CardGroup, Col, Row, Container,Carousel, Navbar, NavItem, Button, Badge} from 'react-bootstrap'
 import TopNavigation from "../Navigation/TopNavigation";
 import {battleBasedOnLocation,battleBasedOnTypes,battleBasedOnKings,search} from '../actions/battleData';
 import {Link} from 'react-router-dom';
 import attack from '../icons/attack.png';
 import defend from '../icons/defend.png';
+import SlideView from '../pages/SlideView'
+
 import './HomePage.css'
 import {Dropdown} from "semantic-ui-react";
-
 
 
 class HomePage extends React.Component {
@@ -134,7 +137,15 @@ class HomePage extends React.Component {
                                                 <Card id="welcome"   bg="danger" text="white" className="text-center p-3">
                                                     <Card.Body>
                                                         <Card.Title>
-                                                            Game Of Thrones
+
+                                                            {/*<Carousel>*/}
+                                                            {/*    <Carousel.Item>*/}
+                                                            {/*        <img src={stark} /><img/>*/}
+                                                            {/*        <img src={lannister} /><img/>*/}
+                                                            {/*        <img src={baratheon} /><img/>*/}
+                                                            {/*    </Carousel.Item>*/}
+                                                            {/*</Carousel>*/}
+                                                            <SlideView />
                                                         </Card.Title>
                                                     </Card.Body>
                                                 </Card>

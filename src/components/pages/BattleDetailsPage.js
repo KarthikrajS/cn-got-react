@@ -33,6 +33,11 @@ import mancerayder from '../icons/mancerayder.png'
 import attack from '../icons/attack.png'
 import defend from '../icons/defend.png'
 import death from '../icons/death.png'
+import notes from '../icons/notes.png'
+import summer from '../icons/summer.png'
+import year from '../icons/year.png'
+
+import './BattleDetailsPage.css'
 
 class BattleDetailsPage extends React.Component{
 
@@ -60,15 +65,7 @@ class BattleDetailsPage extends React.Component{
         localStorage.setItem('Navigation',"No")
         this.updateState()
     }
-    deathCapture(key,vaue){
-        return(
-            <Grid.Column>
-            <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
-                <div><img src={this.aquireHouse("death")} style={{"weight":"50px","height":"50px"}} ></img></div>
-            <div>{key}:{vaue}</div>
-        </Card>
-        </Grid.Column>)
-    }
+
     aquireHouse(housename){
         if (housename === "tully" )
             return tully
@@ -108,6 +105,12 @@ class BattleDetailsPage extends React.Component{
             return attack
         if(housename ==="death")
             return death
+        if(housename==="year")
+            return year
+        if(housename==="summer")
+            return summer
+        if(housename==="notes")
+            return notes
 
     }
     aquireImage(kingName){
@@ -136,20 +139,29 @@ class BattleDetailsPage extends React.Component{
     updateSecondaryMenu(){
         this.setState({navigator: !this.state.navigator})
     }
+    deathCapture(key,vaue){
+        return(
+            <Grid.Column>
+                <Card bg="dark" text="white"  className="text-center p-3">
+                    <Card.Body>
+                    <div><img src={this.aquireHouse("death")} style={{"weight":"50px","height":"50px"}} ></img></div>
+                        <hr/>
+                    <div style={{"fontSize":"15px"}}>{key} : {vaue}</div>
+                    </Card.Body>
+                </Card>
+            </Grid.Column>)
+    }
 
     buildHouseCard(housename,text){
-        console.log(housename)
         var name =housename.split(" ").join("").split("'").join("").toLocaleLowerCase()
         var data = this.aquireHouse(name)
         var houseCard = []
-        {console.log(name)}
         houseCard.push(
-            <Grid.Column>
-                <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
+            <Grid.Column id="houseCard"><Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
                     <Card.Body>
                         <div className="houseImg" ><img src={data} style={{"weight":"50px","height":"50px"}} ></img></div>
                         <hr/>
-                        <div className="number">{text!==null? text:''}</div>
+                        <div className="number" style={{"fontSize":"15px"}}>{text!==null? text:''}</div>
                     </Card.Body>
                 </Card>
             </Grid.Column>
@@ -164,7 +176,7 @@ class BattleDetailsPage extends React.Component{
         cmdColl[0].forEach(cmds=>{
             cmdCard.push(
                 <Grid.Column xs={3} md={3} style={{"marginLeft":"1%"}}>
-                    <Card bg="dark" text="white"  style={{"width": "50%"}} className="text-center p-3">
+                    <Card id="commander" bg="dark" text="white"  className="text-center p-3">
                         <Card.Body>
                             {<div className="cmdName">Commander : {cmds}</div>}
                         </Card.Body>
@@ -184,7 +196,7 @@ class BattleDetailsPage extends React.Component{
             kingCard.push(
 
                 <Grid.Column xs={3} md={3} style={{"marginLeft":"1%"}}>
-                    <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
+                    <Card bg="dark" text="white"  id="kingCard" className="text-center p-3">
                         <Card.Body>
                             {<div className="kingImg"><ExampleComponent roundedColor={color} image={data} ></ExampleComponent></div>}
                         </Card.Body>
@@ -209,13 +221,13 @@ class BattleDetailsPage extends React.Component{
                     <Grid.Row>
                         <Grid.Column >
                             {battle.length !==0 &&
-                            <Card  bg="dark" text="white"  style={{"width": "100%","fontSize":"15px"}}
+                            <Card  bg="dark" text="white" id="topic" style={{"fontSize":"15px"}}
                                    className="text-center p-3" >
                                 {battle.name}
                             </Card>
                             }
                             {battle.length !==0 &&
-                            <Card  bg="dark" text="white"  style={{"width": "100%","fontSize":"15px"}}
+                            <Card  bg="dark" text="white" id="topic" style={{"fontSize":"15px"}}
                                    className="text-center p-3" >
                                 {battle.location+", "+ battle.region}</Card>
                             }
@@ -247,8 +259,8 @@ class BattleDetailsPage extends React.Component{
 
             <br/>
             <Container >
-                {console.log(battle)}
-                <Grid.Row style={{"marginRight":"1.5%"}}>
+
+                <Grid.Row id="houseGrid">
                     {battle.length !==0 && battle.attacker_1 !=="" &&this.buildHouseCard(battle.attacker_1,battle.attacker_1)}
                     {battle.length !==0 && battle.attacker_2 !=="" && this.buildHouseCard(battle.attacker_2,battle.attacker_2)}
                     {battle.length !==0 && battle.attacker_3 !=="" && this.buildHouseCard(battle.attacker_3,battle.attacker_3)}
@@ -264,14 +276,21 @@ class BattleDetailsPage extends React.Component{
             </Container>
             <br/>
             <Container>
-                <Grid.Row style={{"marginRight":"1.5%"}}>
-                    {battle.length !==0 &&this.buildHouseCard("attack",battle.attacker_size)}
+                <Grid.Row style={{"marginRight":"1.5%"}} id="finalDetails">
+                    {battle.length !==0 &&this.buildHouseCard("attack",(battle.attacker_size).toString())}
                     {battle.length !==0 &&this.deathCapture("Capture",(battle.major_capture?"YES":"NO"))}
-                    <hr/>
+                    {battle.length !==0 &&this.buildHouseCard("year",battle.year)}
+                    {battle.length !==0 &&this.buildHouseCard("summer",(battle.summer?"yes":"no"))}
                     {battle.length !==0 &&this.deathCapture("Death",(battle.major_death ?"YES":"NO"))}
                     {battle.length !==0 &&this.buildHouseCard("defend",battle.defender_size)}
+
                 </Grid.Row>
             </Container>
+            {battle.note!=="" &&<Container>
+                <Grid.Row style={{"marginRight":"1.5%", "marginTop":"1%"}} id="finalDetails">
+                    {battle.length !==0 &&this.buildHouseCard("notes",(battle.note))}
+                </Grid.Row>
+            </Container>}
         </div>)
     }
 }

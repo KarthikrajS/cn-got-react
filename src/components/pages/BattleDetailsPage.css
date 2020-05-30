@@ -1,0 +1,59 @@
+@viewport{
+    width:100vw
+}
+
+div#commander{
+    width: 100%;
+}
+div#topic{
+    width: 100%;
+}
+div#kingCard{
+width: 100%
+}
+div#houseCard{
+    margin-left: 2%;
+}
+
+div#houseGrid{
+    margin-right: 1.5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+div#finalDetails{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+@media only screen and (max-width: 480px) {
+    .card-deck .card-columns .card {
+        width: 300px;
+
+    }
+    div#commander {
+        width: 405px;
+    }
+    div#topic{
+        width: 410px;
+    }
+    div#kingCard{
+        width: 100%;
+        margin-left: 25%;
+        margin-top: 3%;
+    }
+    div#houseGrid{
+        margin-left: 2%;
+
+    }
+    div#finalDetails{
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-left: 2%;
+    }
+}
+
+
+
+
+
