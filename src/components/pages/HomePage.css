@@ -1,23 +1,31 @@
 @viewport{
     width:100vw
 }
-
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 div#welcome{
     margin-left: 35%;
     margin-top: 8%;
+    animation: fadeInAnimation ease 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
 }
     .card-deck .card-columns .card {
         width: 650px;
 
     }
     div#slide{
-        width:100px;
+        width:50px;
         height:50px;
-        margin-left: 40%;
+        margin-left: 45%;
     }
-    div#slide img{
 
-    }
 @media only screen and (max-width: 480px) {
     .card-deck .card-columns .card {
         width: 300px;

@@ -20,7 +20,7 @@ export default class SlideView extends React.Component{
     render() {
         return(
             <div  id="slide" >
-            <Slider speed={1000} SlidesToShow={1} slidesPerRow={2} SlidesToScroll={1} infinite={true } arrows={false} autoplay={true}>
+            <Slider speed={250} SlidesToShow={1} slidesPerRow={1} SlidesToScroll={1} infinite={true } arrows={false} autoplay={true}>
                 <img src={stark} ></img>
                 <img src={lannister}></img>
                 <img src={baratheon}></img>
