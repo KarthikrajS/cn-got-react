@@ -74,7 +74,23 @@ class HomePage extends React.Component {
     }
     createBattleCards(battles){
         var html=[]
-
+        if(battles.length ===0){
+            html.push(
+                <Card bg="dark" text="white"  style={{"width": "100%"}} className="text-center p-3">
+                    <Card.Body>
+                        <Card.Text>
+                            <Row>
+                                <Col xs={12}>Not an Attacker King</Col>
+                            </Row>
+                            <hr/>
+                            <Row>
+                               <Col xs={12}>No Battles Found</Col>
+                            </Row>
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+            )
+        }
         battles.forEach(battle=>{
             html.push(
                 <Link to={"/battleDetail/"+battle.name} >
